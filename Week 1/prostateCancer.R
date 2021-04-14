@@ -14,3 +14,4 @@ library(karyoploteR)
 kp <- plotKaryotype(genome="hg38")
 kpPlotMarkers(kp, data=genes, labels=genes$hgnc_symbol, text.orientation = "horizontal",
               r1=0.5, cex=0.8, adjust.label.position = TRUE)
+kpAddMainTitle(kp, "18 Genes that are Associated with Prostate Cancer")
