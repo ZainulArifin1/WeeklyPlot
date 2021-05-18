@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1621341205340.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3726114060",
+    "id" : "83704AD7",
+    "lastKnownWriteTime" : 1619541234,
+    "last_content_update" : 1619541234,
+    "path" : "~/ALGORITMA BOOTCAMP/WeeklyPlot/Week 3/snp1500.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "79,0",
+        "scrollLine" : "61"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

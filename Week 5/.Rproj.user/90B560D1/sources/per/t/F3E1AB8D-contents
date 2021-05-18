@@ -1,0 +1,66 @@
+library(tidyverse)
+library(ggrepel)
+library(scales)
+
+sysfonts::font_add_google('Bebas Neue')
+sysfonts::font_add_google('Montserrat')
+showtext::showtext_auto()
+showtext::showtext_opts(dpi = 400)
+
+
+# the data comes from this spreadsheet: https://docs.google.com/spreadsheets/d/1EOtFsZw2VYrnvqdN8wU9gNoO6dyjep8C_nWCstypx0w/edit#gid=858269265
+# which is part of this blogpost: https://sinaahmadi.github.io/posts/phd-in-ireland-vs-europe-a-comparative-overview.html by Sina Ahmadi
+
+df <- tibble::tribble(
+  ~Country.name, ~PhD.income, ~Minimum.wage, ~`salary/min_wage`,
+  "Ireland",        1333,          1574,       0.8468869123,
+  "United Kingdom",        1395,          1220,        1.143442623,
+  "Spain",        1307,          1002,        1.304391218,
+  "France",        1758,          1324,        1.327794562,
+  "Luxembourg",        2835,          1808,        1.568030973,
+  "Netherlands",        2395,          1489,        1.608462055,
+  "Portugal",         920,           571,        1.611208406,
+  "Germany",        2001,          1168,        1.713184932,
+  "Belgium",        2373,          1216,        1.951480263
+)
+
+triangles <- data.frame(x=c(500,3000,3000, 500,500,3000), 
+                        y=c(500,3000,500, 500,3000,3000), 
+                        t=c('a', 'a', 'a',  'b', 'b', 'b'))
+
+p <- ggplot(df, aes(x = Minimum.wage, y = PhD.income)) +
+  geom_polygon(data = triangles, aes(x = x, y= y, fill = t), 
+               show.legend = F, alpha = 0.5) +
+  geom_abline(intercept = 0, slope = 1, lty = 2, lwd = 1) +
+  geom_point(aes(col = `salary/min_wage` > 1), size = 5, show.legend = F) +
+  geom_label_repel(aes(label = Country.name), size = 9, nudge_y = 10, family = 'Bebas Neue', segment.alpha = 0, fill = alpha('white', 0.65), label.size = NA) +
+  geom_text(data = data.frame(x = 2500, y = 2050, label = 'Line of equality', family = 'Montserrat'), 
+            aes(x = x, y = y, label = label), size = 8) +
+  geom_curve(data = data.frame(x = 2500, xend = 2400, y = 2100, yend = 2300), 
+             aes(x = x, y = y, xend = xend, yend = yend), curvature = 0.25, arrow = arrow(30L, unit(0.22, "inches"), "last", "closed"), inherit.aes = FALSE) +
+  scale_x_continuous(limits = c(500, 3000), expand = c(0.01,0.01), labels = dollar_format(suffix = "", prefix = "???")) +
+  scale_y_continuous(limits = c(500, 3000), expand = c(0.01,0.01), labels = dollar_format(suffix = "", prefix = "???")) +
+  scale_colour_manual(values = c('#A9E2F5', '#CAA6DB')) +
+  scale_fill_manual(values = c('#CAA6DB', '#A9E2F5')) +
+  labs(title = 'Relationship between minimum wage and PhD income',
+       subtitle = paste(
+         strwrap(
+           "This plot shows the minimum wage and monthly income for PhD students in several European countries. In countries above the diagonal line, PhD students tend to earn more than the minimum wage. Ireland is the only country where PhD students tend to earn less than the minimum wage.",
+           width = 80), collapse = "\n" ),
+       x = '\nMinimum wage', y = 'PhD income\n',
+       caption = '@sarahe145 | #30DayChartChallenge\nData source: sinaahmadi.github.io/posts/phd-in-ireland-vs-europe-a-comparative-overview.html') +
+  #theme_minimal() +
+  theme(panel.grid = element_blank(),
+        axis.ticks = element_line(),
+        axis.text = element_text(colour = 'black', size = 20, family = 'Montserrat'),
+        axis.title = element_text(colour = '#582C4D', size = 24, family = 'Montserrat', face = 'bold'),
+        plot.title = element_text(colour = '#582C4D', family = 'Bebas Neue', size = 30, hjust = 0),
+        plot.title.position = 'plot',  #"plot" means it would be aligned to the entire plot
+        plot.caption = element_text(size = 14, margin = margin(t = 20), hjust = 1, family = 'Montserrat', colour = '#582C4D'),
+        plot.subtitle = element_text(size = 19, margin = margin(t = 20, b = 30), family = 'Montserrat', hjust = 0),
+        plot.background = element_rect(colour = '#FDFAF3', fill = '#FDFAF3'),
+        panel.background = element_rect(colour = '#FDFAF3', fill = '#FDFAF3'),
+        plot.margin = margin(20,40,20,20)
+        ) 
+
+ggsave('13-correlation.png', p, width = 12.5, height = 12, unit = 'in', dpi = 400)

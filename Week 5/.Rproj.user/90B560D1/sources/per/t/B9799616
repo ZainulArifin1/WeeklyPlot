@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1621343595300.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3593169294",
+    "id" : "B9799616",
+    "lastKnownWriteTime" : 1620634678,
+    "last_content_update" : 1620634678,
+    "path" : "~/chrab-final/chrab/R/plot.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "268,4",
+        "scrollLine" : "251"
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

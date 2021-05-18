@@ -1,0 +1,276 @@
+#' Plot graph visualizing chromosome state of a sample
+#'
+#' This function takes data frame which contain information of chromosome amount in a sample to produce a graph
+#' to visualize the output.The x-axis is chromosome coordinates (1-22, x, and y) wwhile the y-axis is the amount of chromosome
+#' in that particular chromosome. To ease identification, even, odd, and aneuploid chromosomes are colored differently.
+#'
+#' @param comparison_tbl This parameter takes data frame containing chromosomal state as input.
+#' @param size This parameter takes a single numeric value indicating plot size as input.
+#'
+#' @examples
+#' #Plot single data frame
+#' plot_comparison(comparison_tbl, size = 1.5)
+#'
+#' #Plot multiple data frames in a list
+#' for (i in 1:12){
+#' print(plot_comparison(compare_tbl[[i]], size = 1.2))
+#' }
+#'
+#' @export
+
+plot_comparison <-
+  function(comparison_tbl,
+           sex,
+           size = 0.1,
+           plot_name = NULL){
+  comparison_tbl$chr_coor <- factor(comparison_tbl$chr_coor, unique(comparison_tbl$chr_coor))
+
+
+  sample_name <- names(plot_name)
+
+  # set colour
+  my_colour <- brewer.pal(3,"Set2")
+  names(my_colour) <- c("even", "abnormal", "odd")
+  colour_scale <- scale_colour_manual(name = "Legend",values = my_colour, labels = c("Abnormal", "Even", "Odd"))
+
+  # create annotate_tbl
+
+  annotate_tbl <- annotation_tbl_create(comparison_tbl)
+
+
+  g <- ggplot(data = comparison_tbl, aes(x = chr_coor, y = num_chr)) +
+    geom_point(size = size, colour = "gray20")+
+    scale_y_continuous(expand = c(0,0), limits = c(0,4))+
+    scale_x_discrete(expand = c(0,0))+
+    theme_bw()  +
+    theme(axis.text.x = element_blank(),
+          axis.ticks.x = element_blank()
+          ) +
+    colour_scale +
+    labs(x = "Chromosome", y = "Number of Chromosomes") +
+    theme(
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank(),
+      panel.border = element_blank(), panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.line = element_line(colour = "black"))
+
+  g <- g +
+    geom_hline(yintercept=1, size = 0.5, color = "hotpink1") +
+    geom_hline(yintercept=2, size = 0.5, color = "antiquewhite3") +
+    geom_hline(yintercept=3, size = 0.5, color = "royalblue2")
+
+
+
+  g <-
+    g +
+  map(1:22, vline_function,annotate_tbl) +
+  map(1:22, annotate_function, annotate_tbl)
+
+
+  if (sex) {
+    g <-
+      g +
+      annotate(geom = "text", x = annotate_tbl[[23, "annotate_x"]], y = 0.2, size = 2, label = annotate_tbl[[23, "chr"]]) +
+      annotate(geom = "text", x = annotate_tbl[[24, "annotate_x"]], y = 0.2, size = 2, label = annotate_tbl[[24, "chr"]]) +
+      geom_vline(xintercept = annotate_tbl[[23, "chr_start_x"]], color = "grey", linetype = "dashed") +
+      geom_vline(xintercept = annotate_tbl[[24, "chr_start_x"]], color = "grey", linetype = "dashed")
+  }
+
+  g
+  }
+
+plot_comparison_all <- function(files_plotted, size = size, sex = sex, plot_name){
+  for (i in 1:length(files_plotted)){
+    print(plot_comparison(files_plotted[[i]], size = size, sex = sex, plot_name = files_plotted[i]))
+  }
+}
+
+vline_function <- function(num, annotate_tbl) {
+  geom_vline(xintercept = annotate_tbl[[num, "chr_start_x"]], color = "grey", linetype = "dashed")
+}
+
+annotate_function <- function(num, annotate_tbl) {
+  annotate(geom = "text", x = annotate_tbl[[num, "annotate_x"]], y = 0.2, size = 2, label = annotate_tbl[[num, "chr"]])
+}
+
+
+annotation_tbl_create <- function(comparison_tbl){
+  annotate_tbl <- comparison_tbl %>% ungroup()
+  annotate_tbl$chr <- factor(annotate_tbl$chr, unique(annotate_tbl$chr))
+  annotate_tbl <- dplyr::count(annotate_tbl, chr)
+  annotate_tbl$chr_start_x <- 0
+
+  for (i in 1:nrow(annotate_tbl)) {
+    annotate_tbl[[i, "chr_start_x"]] <- sum(annotate_tbl[1:(i-1), "n"])
+  }
+
+  annotate_tbl[[1, "chr_start_x"]] <- 0
+
+  annotate_tbl$annotate_x <- 0
+  for (i in 1:nrow(annotate_tbl)) {
+    annotate_tbl[[i, "annotate_x"]] <- annotate_tbl[[i, "chr_start_x"]] + 0.5 * annotate_tbl[[i, "n"]]
+    annotate_tbl[[i, "chr_end_x"]] <- annotate_tbl[[i, "chr_start_x"]] + annotate_tbl[[i, "n"]]
+  }
+
+  annotate_tbl <- select(annotate_tbl, chr, chr_start_x, annotate_x, chr_end_x)
+}
+
+#' Create x coordinates for line segments that plot chromosome segments
+#' @export
+
+geom_segment_function <- function(segment_num, annotation_tbl) {
+
+
+  chr_start_x  <- annotation_tbl  %>% dplyr::filter(segment_num == {{segment_num}})  %>% pull(start_x)
+  chr_end_x  <- annotation_tbl  %>% dplyr::filter(segment_num == {{segment_num}})  %>% pull(end_x)
+  colour  <- annotation_tbl  %>% dplyr::filter(segment_num == {{segment_num}})  %>% pull(segment_colour)
+  chr_num  <- annotation_tbl  %>% dplyr::filter(segment_num == {{segment_num}})  %>% pull(segment_chr_num_mean)
+
+  geom_segment(aes(x = chr_start_x, y = chr_num, xend = chr_end_x, yend = chr_num), colour = colour, size = 2)
+}
+
+#' Create annotation tbl for segments
+#' @export
+segment_annotation_tbl_create <- function(segment_plot_tbl) {
+    segment_plot_tbl  %>%
+    ungroup()  %>%
+      select(run_length, segment_num, segment_ab_cal, segment_plot_group, segment_chr_num_mean)  %>%
+      mutate(segment_num = as_factor(segment_num))  %>%
+      distinct(segment_num, run_length, segment_chr_num_mean, segment_ab_cal)  %>%
+      mutate(segment_colour = if_else(
+        segment_ab_cal,
+        "red",
+        "black"
+      ))  %>%
+      ungroup()  %>%
+      dplyr::mutate(end_x = cumsum(run_length))  %>%
+      mutate(start_x = end_x - run_length)  %>%
+      select(start_x, end_x, everything())
+}
+
+#' Create annotation tbl for segments all
+#' @export
+segment_annotation_tbl_create_all <- function(segment_plot_tbl) {
+  for (i in 1:length(segment_plot_tbl)) {
+    segment_plot_tbl[[i]] <- segment_annotation_tbl_create(segment_plot_tbl[[i]])
+  }
+  return(segment_plot_tbl)
+}
+
+#' Differentiate del and dup
+#' @export
+change_color <- function(segment_plot_tbl){
+  autosome <-nrow(segment_plot_tbl)-2
+  x_chr <- autosome + 1
+  y_chr <- autosome + 2
+
+  tbl_autosome <- segment_plot_tbl[1:autosome,]
+  tbl_sex <- segment_plot_tbl[x_chr:y_chr,]
+
+  sex_chr_status <- unique(tbl_sex$segment_colour)
+
+  tbl_autosome[tbl_autosome$segment_colour == "red" & tbl_autosome$segment_chr_num_mean > 2, "segment_colour"] <- "blue"
+  tbl_autosome[tbl_autosome$segment_colour == "black" & tbl_autosome$segment_chr_num_mean > 2.65, "segment_colour"] <- "blue"
+  tbl_autosome[tbl_autosome$segment_colour == "blue" & tbl_autosome$segment_chr_num_mean < 3.5, "segment_chr_num_mean"] <- 3
+  tbl_autosome[tbl_autosome$segment_colour == "blue" & tbl_autosome$segment_chr_num_mean >= 3.5, "segment_chr_num_mean"] <- 4
+
+  tbl_autosome[tbl_autosome$segment_colour == "black" & tbl_autosome$segment_chr_num_mean > 0.75 & tbl_autosome$segment_chr_num_mean < 1.25 , "segment_colour"] <- "red"
+  tbl_autosome[tbl_autosome$segment_colour == "red" & tbl_autosome$segment_chr_num_mean > 0.75 & tbl_autosome$segment_chr_num_mean < 1.25, "segment_chr_num_mean"] <- 1
+
+  tbl_sex[tbl_sex$segment_chr_num_mean < 0.5, "segment_chr_num_mean"] <- 0
+  tbl_sex[tbl_sex$segment_chr_num_mean >=0.5 & tbl_sex$segment_chr_num_mean < 1.5, "segment_chr_num_mean"] <- 1
+  tbl_sex[tbl_sex$segment_chr_num_mean >=1.5 & tbl_sex$segment_chr_num_mean < 2.5, "segment_chr_num_mean"] <- 2
+  tbl_sex[tbl_sex$segment_chr_num_mean >=2.5 & tbl_sex$segment_chr_num_mean < 3.5, "segment_chr_num_mean"] <- 3
+  tbl_sex[tbl_sex$segment_chr_num_mean >= 3.5, "segment_chr_num_mean"] <- 4
+
+  sex_chr_count <- sum(tbl_sex$segment_chr_num_mean)
+  tbl_sex[sex_chr_count > 2, "segment_colour"] <- "blue"
+  tbl_sex[sex_chr_count < 2, "segment_colour"] <- "red"
+  tbl_sex[sex_chr_count == 2, "segment_colour"] <- "black"
+  tbl_combined <- rbind(tbl_autosome,tbl_sex)
+  tbl_combined[tbl_combined$segment_colour == "black", "segment_colour"] <- NA
+  return(tbl_combined)
+}
+
+#' Differentiate del and dup for list data type
+#' @export
+
+change_color_all <- function(files){
+  for (i in 1:length(files)) {
+    files[[i]] <- change_color(files[[i]])
+  }
+  return(files)
+}
+
+
+#' Genome view plot
+#' @export
+
+plot_ploidy <- function(segment_plot_tbl, segment_annotation_tbl){
+
+  #Input sample and add index
+  new_plot <- segment_plot_tbl
+  new_plot <- tibble::rowid_to_column(new_plot, "end_x")
+
+  #Input and modify segmental annotation file
+  test_segment <- segment_annotation_tbl %>%
+    drop_na()
+
+  dtest_segment_rep <- test_segment %>%
+    mutate(start_x = map2(start_x, end_x, seq, 1)) %>%
+    unnest(start_x) %>%
+    mutate(end_x = start_x + 1)
+
+  dtest_segment_rep <- dtest_segment_rep %>%
+    select(end_x, segment_chr_num_mean, segment_colour) %>%
+    unique()
+
+  dtest_segment_rep <-
+    dtest_segment_rep %>%
+    group_by(segment_chr_num_mean) %>%
+    filter(row_number()!=n()|n()==1)
+
+  #join and order table
+  chrOrder<-c(paste(1:22,sep=""),"X","Y")
+  new_plot$chr<-factor(new_plot$chr, levels=chrOrder)
+  final_plot <- left_join(new_plot, dtest_segment_rep, by = "end_x")
+  final_plot$chr<-factor(final_plot$chr, levels=chrOrder)
+
+  final_plot <- final_plot %>%
+    mutate(
+      text = paste("Chr count:",num_chr)
+    )
+
+  g <-
+    ggplot() +
+    geom_rect(data = subset(subset(final_plot,chr %in% c('2','4','6','8','10','12','14','16','18','20','22','Y'))),
+                          aes(fill = "white"),xmin = -Inf,xmax = Inf,
+                          ymin = -Inf,ymax = Inf,alpha = 0.3) +
+    scale_fill_manual(values = alpha(c("#f2f2f2"), 0.2)) +
+    geom_point(data = final_plot, mapping = aes(x = reorder(chr_coor, end_x), y = num_chr), size = 0.7) +
+    geom_point(data = final_plot, mapping = aes(x = chr_coor, y = segment_chr_num_mean.y, color = segment_colour ), size = 2, pch = 15) +
+    scale_colour_identity() +
+    facet_grid(~chr, scales = 'free_x', space = 'free_x', switch = 'x') +
+    theme(axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          panel.spacing = unit(0, "lines"),
+          legend.position = "none",
+          axis.line.y.left = element_line(size = 0.5, colour = "black"),
+          axis.text = element_text(size = 17),
+          strip.background = element_blank(),
+          strip.text.x = element_text(size = 15)
+          ) +
+    labs(
+      x = "",
+      y = ""
+    ) +
+    geom_hline(yintercept=-0.2) +
+    scale_y_continuous(limits = c(-0.2,4.2), expand = c(0, 0))
+
+
+  g +
+    geom_hline(yintercept=1, size = 0.8, alpha = 0.5, color = "hotpink1") +
+    geom_hline(yintercept=2, size = 0.8, alpha = 0.5, color = "darkgoldenrod4") +
+    geom_hline(yintercept=3, size = 0.8, alpha = 0.5, color = "royalblue2")
+}

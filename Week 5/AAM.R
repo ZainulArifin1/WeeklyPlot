@@ -1,0 +1,64 @@
+library(tidyverse)
+library(scales)
+library(ragg)
+library(ggthemes)
+
+sysfonts::font_add_google('Montserrat')
+showtext::showtext_auto()
+showtext::showtext_opts(dpi = 400)
+
+options(scipen = 999)
+
+# input data --------------------------------------------------------------
+survey <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-05-18/survey.csv')
+
+# data wrangling ----------------------------------------------------------
+survey_filt <- survey %>%
+  select(highest_level_of_education_completed, gender, annual_salary) %>%
+  filter(gender %in% c("Man","Woman")) %>%
+  filter(!highest_level_of_education_completed %in% NA)
+
+survey_summary <- survey_filt %>%
+  group_by(highest_level_of_education_completed, gender) %>%
+  summarise_at(vars(annual_salary), median) %>%
+  #mutate(annual_salary = ifelse(gender == 'Man', as.integer(annual_salary * -1), as.integer(annual_salary))) %>%
+  arrange(match(highest_level_of_education_completed, 
+                c("Professional degree (MD, JD, etc.)", "PhD", "Master's degree","College degree", "Some college", "High School")), desc(gender), desc(annual_salary))
+
+# Visualization -----------------------------------------------------------
+order_viz <- c("Professional degree (MD, JD, etc.)", "PhD", "Master's degree","College degree", "Some college", "High School")
+
+survey_viz <- survey_summary %>%
+  ggplot(aes(x = highest_level_of_education_completed, y = annual_salary, fill = gender)) +
+  geom_bar(stat = 'identity', position = position_dodge2(reverse = TRUE)) +
+  coord_flip() +
+  scale_fill_manual(values = c('#ff7129', '#d3b4d0')) +
+  scale_y_continuous(limits = c(0,130000), expand = c(0, 0), labels = dollar_format()) +
+  scale_x_discrete(limits = rev(order_viz)) +
+  ggthemes::theme_economist() +
+  theme(
+    axis.title.y  = element_blank(),
+    axis.title.x = element_text(size = 10, family = 'Montserrat', margin = margin(t = 10)),
+    axis.text = element_text(size = 10, family = 'Montserrat'),
+    legend.position = "top",
+    legend.title = element_blank(),
+    plot.title = element_text(colour = '#582C4D', family = 'Bebas Neue', size = 30, hjust = 0),
+    plot.title.position = 'plot',  #"plot" means it would be aligned to the entire plot
+    plot.caption = element_text(size = 14, margin = margin(t = 20), hjust = 1, family = 'Montserrat', colour = '#582C4D'),
+    plot.subtitle = element_text(size = 19, margin = margin(t = 20, b = 30), family = 'Montserrat', hjust = 0),
+    plot.margin = margin(20,20,20,20)
+  ) +
+  labs(
+    title = "EDUCATION PAYS! RIGHT?",
+    subtitle = paste(
+      strwrap(
+        "Education pays! That’s the truth. An increase in education level is likely to result in the increase of salary regardless of years of experience. However, women are paid way less than men across all level of educations on average. AAM stated that this survey does not represent the general population but do you think if another survey group conduct another survey the result will be different?",
+        width = 108), collapse = "\n" ),
+    caption = "@SaintZainn | #TidyTuesday \nSource: Ask a Manager Salary Survey",
+    y = "Median Annual Salary ($)"
+  )
+
+
+agg_png(filename = "result.png", width = 40, height = 30, units = 'cm', res = 400)
+survey_viz
+dev.off()
