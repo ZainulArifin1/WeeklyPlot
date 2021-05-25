@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1621928867481.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "D7BDE7A8",
+    "lastKnownWriteTime" : 1621347535,
+    "last_content_update" : 1621347535,
+    "path" : "~/ALGORITMA BOOTCAMP/WeeklyPlot/Week 5/AAM.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "61,0",
+        "scrollLine" : "43"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
