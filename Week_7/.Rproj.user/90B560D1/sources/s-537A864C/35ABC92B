@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1622557406798.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "35ABC92B",
+    "lastKnownWriteTime" : 1622562590,
+    "last_content_update" : 1622562826752,
+    "path" : "~/ALGORITMA BOOTCAMP/WeeklyPlot/Week_7/survivor.R",
+    "project_path" : "survivor.R",
+    "properties" : {
+        "cursorPosition" : "49,0",
+        "docOutlineVisible" : "0",
+        "scrollLine" : "43",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

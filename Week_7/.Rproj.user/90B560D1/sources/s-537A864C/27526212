@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1622558822003.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "27526212",
+    "lastKnownWriteTime" : 8244232881496928544,
+    "last_content_update" : 1622558822003,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "9095017",
+        "caption" : "country_mapped",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=country_mapped&cache_key=9095017",
+        "displayedObservations" : 18,
+        "environment" : "",
+        "object" : "country_mapped",
+        "preview" : 0,
+        "totalObservations" : 18,
+        "variables" : 96
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
