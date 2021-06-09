@@ -1,0 +1,64 @@
+library(tidyverse)
+library(scales)
+library(ragg)
+library(ggthemes)
+
+sysfonts::font_add_google('Montserrat')
+sysfonts::font_add_google("Press Start 2P")
+showtext::showtext_auto()
+
+records <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-05-25/records.csv')
+drivers <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-05-25/drivers.csv')
+
+
+rr <- records %>%
+  filter(track == "Rainbow Road", type == "Three Lap", shortcut == "Yes")
+
+sub_text <- "Rainbow Road is the final and longest map in Mario Kart 64. With a distance of 2 Km, it takes an average player around 2 minutes to complete one lap. But a certain group of players (speedrunners) are not interested in playing Mario Kart 64 fair and square. By abusing skips, glitches, and overall clean and crisp driving, speedrunners manage to complete the game from 5 minutes in 1997 to less than 1 minute in 2021. The most prominent glitch was found recently by Forest64 that allows you to instantly move to the finish line."
+
+
+
+rr_plot <-
+  ggplot(data = rr, mapping = aes(x = date, y = time)) +
+  geom_line(colour = "#e70012", size = 1) +
+  geom_point(mapping = aes(colour = player), size = 2) +
+  #scale_colour_manual(values = rainbow(length(unique(rr$player)))) +
+  geom_text(data = data.frame(x = as.Date("2017-5-05"), y = 110, label = 'Forest64 discovered a\n Lakitu skip that\ninstantly takes you\n back to the very end\n (October 2020)', family = 'Press Start 2P'), 
+            aes(x = x, y = y, label = label), size = 4, colour = "white") +
+  geom_curve(data = data.frame(x = as.Date("2017-5-05"), xend = as.Date("2020-6-10"), y = 70, yend = 50), 
+             aes(x = x, y = y, xend = xend, yend = yend), curvature = 0.6, arrow = arrow(20L, unit(0.22, "inches"), "last", "closed"), inherit.aes = FALSE, colour = "white") +
+  scale_y_continuous(limits = c(0,330), expand = c(0, 0)) +
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
+  labs(
+    x = "Year (1997 - 2021)",
+    y = "Time (s)",
+    title = "Rainbow Road Mario Kart 64 World Record Progression",
+    subtitle = paste(
+      strwrap(sub_text,
+              width = 139), collapse = "\n" ),
+    caption = "@SaintZainn | #TidyTuesday | Source: mkwrs.com"
+  ) +
+  theme(
+    panel.grid = element_blank(),
+    panel.grid.major.x = element_line(colour = "#0d0c0c"),
+    panel.background = element_rect(fill = "black"),
+    plot.background = element_rect(fill = "black"),
+    plot.title = element_text(colour = '#e70012', family = 'Press Start 2P', size = 17, hjust = 0, margin = margin(t = 10,b=10,r=0,l=0)),
+    plot.subtitle = element_text(colour = 'white', family = 'Montserrat', size = 14, hjust = 0, margin = margin(t=10,b=10,l=10,r=10)),
+    plot.caption  = element_text(colour = 'white', family = 'Montserrat', size = 10, hjust = 1.15),
+    axis.text = element_text(color = "white", size = 8, family = 'Press Start 2P'),
+    axis.line = element_line(color = "white"),
+    axis.title = element_text(color = "#e70012", size = 12, family = 'Press Start 2P'),
+    axis.title.y = element_text(margin = margin(t = 0, r = 2, b = 0, l = 0)),
+    axis.title.x = element_text(margin = margin(t = 12, r = 0, b = 0, l = 0)),
+    axis.ticks = element_blank(),
+    legend.position = "right",
+    legend.box.background  = element_rect(fill = "black"),
+    legend.background = element_rect(fill = "black"),
+    legend.text = element_text(colour = "white"),
+    legend.key = element_rect(fill = "black")
+  )
+
+agg_png(filename = "result.png", width = 32, height = 17.5, units = 'cm', res = 110)
+rr_plot
+dev.off()

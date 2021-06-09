@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1623254908482.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "DB8AAFFD",
+    "lastKnownWriteTime" : 1618503272,
+    "last_content_update" : 1618503272,
+    "path" : "~/ALGORITMA BOOTCAMP/WeeklyPlot/equality/equality_plot.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "57,8",
+        "scrollLine" : "45"
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

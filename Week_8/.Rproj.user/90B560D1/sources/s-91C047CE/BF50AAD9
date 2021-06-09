@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1623250421121.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "BF50AAD9",
+    "lastKnownWriteTime" : 7308604914264011873,
+    "last_content_update" : 1623250421121,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "C5932439",
+        "caption" : "fishing",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=fishing&cache_key=C5932439",
+        "displayedObservations" : 65706,
+        "environment" : "",
+        "object" : "fishing",
+        "preview" : 0,
+        "totalObservations" : 65706,
+        "variables" : 7
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

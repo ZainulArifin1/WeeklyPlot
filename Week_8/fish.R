@@ -1,0 +1,59 @@
+# Libraries ---------------------------------------------------------------
+library(tidyverse)
+library(scales)
+library(ragg)
+library(ggthemes)
+library(extrafont)
+library(cowplot)
+
+sysfonts::font_add_google('Montserrat')
+sysfonts::font_add_google("Gloria Hallelujah")
+showtext::showtext_auto()
+
+# Data Input and Wrangling ------------------------------------------------
+tuesdata <- tidytuesdayR::tt_load('2021-06-08')
+
+fishing <- tuesdata$fishing
+
+select_fish <- c("Lake Sturgeon", "Sunfish", "Pacific salmon")
+fish <- filter(fishing, species %in% select_fish)[,c(1,2,3,4)]
+f1 <- fish %>% group_by(lake, year, species) %>% summarise(count = sum(grand_total, na.rm=T))
+
+p <- ggplot() +
+  geom_tile(data=f1, mapping=aes(x=year, y=lake, fill=count, height=.9)) +
+  labs(
+    title="GREAT LAKES DECLINING FISHES POPULATIONS", 
+    caption="@SaintZainn | Data: Great Lakes Fishery Commission", 
+    y="", 
+    x="", 
+    subtitle = "The great lakes are home to many fishes that are unfortunately threatened due to invasive species \ninvasion. Among those that are threatened are the lake sturgeon, pacific salmon, and longear sunfish") +
+  scale_fill_gradient2("Number of fish", limits=c(0,32000), breaks=c(0,32000), 
+                      labels=c("0", "32,000"), low = "#d1debf", mid = "#203108", midpoint = 12000,high = "#801111"
+                      ) +
+  facet_wrap(~species, ncol=1) +
+  scale_x_continuous(limits=c(1867,2015), breaks=seq(1870,2015,29)) +
+  guides(fill = guide_colorbar(title.position = "bottom")) +
+  theme_gray() +
+  theme(strip.background =element_rect(fill=alpha("#012129", 0.5)),
+        strip.text = element_text(colour = 'white', family="Gloria Hallelujah", size=16, face=2),
+        plot.background = element_rect(fill = "#012129", colour="#012129"),
+        panel.background = element_rect(fill = "#012129", colour="#012129"),
+        legend.background = element_rect(fill = "#012129"),
+        legend.key = element_rect(fill = "#012129", colour="#012129"), 
+        legend.text =  element_text(colour = "white", size=20, family="Gloria Hallelujah"),
+        legend.title =  element_text(colour = "white", size=20, family="Gloria Hallelujah", hjust=0.5),
+        plot.title = element_text(colour = "white", size=35, face="bold", hjust = 0, family="Gloria Hallelujah",margin = margin(t = 10,b=10,r=0,l=0)),
+        plot.title.position = 'plot', 
+        plot.subtitle = element_text(colour = "white", size=27, hjust = 0, family="Gloria Hallelujah"),
+        plot.caption = element_text(colour = "white", size=20, hjust = 1.5, family="Gloria Hallelujah"),
+        legend.position="bottom",
+        plot.margin = unit(c(0.3, 8, 0.3, 0.8), "cm"), #top, right, bottom, left
+        axis.title= element_blank(),
+        axis.text = element_text(colour = "white", size=20, family="Gloria Hallelujah"),
+        panel.grid.major = element_line(colour="white"),
+        panel.grid.minor = element_blank()
+        )
+
+agg_png(filename = "result.png", width = 32, height = 17.5, units = 'cm', res = 200)
+p
+dev.off()

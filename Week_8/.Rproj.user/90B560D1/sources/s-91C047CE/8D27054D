@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1623249245416.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "8D27054D",
+    "lastKnownWriteTime" : 1621960328,
+    "last_content_update" : 1621960328,
+    "path" : "~/ALGORITMA BOOTCAMP/WeeklyPlot/Week_6/mario_kart.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "45,99",
+        "scrollLine" : "37"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

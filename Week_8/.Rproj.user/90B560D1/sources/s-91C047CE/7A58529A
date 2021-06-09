@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1623249198160.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "7A58529A",
+    "lastKnownWriteTime" : 1623255058,
+    "last_content_update" : 1623255676319,
+    "path" : "~/ALGORITMA BOOTCAMP/WeeklyPlot/Week_8/fish.R",
+    "project_path" : "fish.R",
+    "properties" : {
+        "cursorPosition" : "56,0",
+        "scrollLine" : "41",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
