@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1623750068581.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "7C7AD505",
+    "lastKnownWriteTime" : 1623757089,
+    "last_content_update" : 1623757089121,
+    "path" : "~/ALGORITMA BOOTCAMP/WeeklyPlot/Week_9/duBois.R",
+    "project_path" : "duBois.R",
+    "properties" : {
+        "cursorPosition" : "24,0",
+        "scrollLine" : "5",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,308 @@
+---
+title: "Untitled"
+author: "Zainul"
+date: "June 12, 2021"
+output: html_document
+---
+
+```{r}
+# Data wrangling
+library(tidyverse)
+
+# Image manipulation
+library(imager)
+
+# Deep learning
+library(keras)
+
+# Model Evaluation
+library(caret)
+
+library(reticulate)
+
+# Use python in your anaconda3 environment folder
+use_condaenv(condaenv = "r-tensorflow",conda ="../../../../anaconda3/envs/r-tensorflow/",required = T)
+
+options(scipen = 999)
+```
+
+
+```{r}
+folder_list <- list.files("data/train/")
+
+folder_path <- paste0("data/train/", folder_list,"/")
+
+# Desired height and width of images
+target_size <- c(110, 140)
+
+# Batch size for training the model
+batch_size <- 32
+
+# Image Generator
+train_data_gen <- image_data_generator(rescale = 1/255, # Scaling pixel value
+                                       horizontal_flip = T, # Flip image horizontally
+                                       vertical_flip = T, # Flip image vertically 
+                                       rotation_range = 45, # Rotate image from 0 to 45 degrees
+                                       zoom_range = 0.25, # Zoom in or zoom out range
+                                       validation_split = 0.2 # 20% data as validation data
+)
+
+# Training Dataset
+train_image_array_gen <- flow_images_from_directory(directory = "data/train/", # Folder of the data
+                                                    target_size = target_size, # target of the image dimension (64 x 64)  
+                                                    color_mode = "rgb", # use RGB color
+                                                    batch_size = batch_size , 
+                                                    seed = 123,  # set random seed
+                                                    subset = "training", # declare that this is for training data
+                                                    generator = train_data_gen
+)
+
+# Validation Dataset
+val_image_array_gen <- flow_images_from_directory(directory = "data/train/",
+                                                  target_size = target_size, 
+                                                  color_mode = "rgb", 
+                                                  batch_size = batch_size ,
+                                                  seed = 123,
+                                                  subset = "validation", # declare that this is the validation data
+                                                  generator = train_data_gen
+)
+
+# Number of training samples
+train_samples <- train_image_array_gen$n
+
+# Number of validation samples
+valid_samples <- val_image_array_gen$n
+```
+
+```{r}
+tensorflow::tf$random$set_seed(123)
+
+model_big_DO <- keras_model_sequential() %>% 
+  
+  # First convolutional layer
+  layer_conv_2d(filters = 32,
+                kernel_size = c(5,5), # 5 x 5 filters
+                padding = "same",
+                activation = "relu",
+                input_shape = c(target_size, 3)
+                ) %>% 
+  
+  # Second convolutional layer
+  layer_conv_2d(filters = 32,
+                kernel_size = c(3,3), # 3 x 3 filters
+                padding = "same",
+                activation = "relu"
+                ) %>% 
+  
+  # Max pooling layer
+  layer_max_pooling_2d(pool_size = c(2,2)) %>% 
+  
+  
+  # Third convolutional layer
+  layer_conv_2d(filters = 64,
+                kernel_size = c(3,3),
+                padding = "same",
+                activation = "relu"
+                ) %>% 
+
+  # Max pooling layer
+  layer_max_pooling_2d(pool_size = c(2,2)) %>% 
+  
+  
+  # Fourth convolutional layer
+  layer_conv_2d(filters = 128,
+                kernel_size = c(3,3),
+                padding = "same",
+                activation = "relu"
+                ) %>% 
+  
+  # Max pooling layer
+  layer_max_pooling_2d(pool_size = c(2,2)) %>% 
+  
+
+  # Fifth convolutional layer
+  layer_conv_2d(filters = 256,
+                kernel_size = c(3,3),
+                padding = "same",
+                activation = "relu"
+                ) %>% 
+  
+  # Max pooling layer
+  layer_max_pooling_2d(pool_size = c(2,2)) %>% 
+  
+  
+  # Flattening layer
+  layer_flatten() %>%
+  
+  
+  # Dense layer
+  layer_dense(units = 128,
+              activation = "elu") %>%
+  
+  # Dense layer
+  layer_dense(units = 64,
+              activation = "elu") %>%
+  
+    # Dense layer
+  layer_dense(units = 32,
+              activation = "elu") %>%
+  
+      # Dense layer
+  layer_dense(units = 16,
+              activation = "elu", kernel_regularizer = regularizer_l2(0.001)) %>%
+  
+  # Dropout Layer
+  layer_dropout(rate = 0.1) %>%
+  
+  # Output layer
+  layer_dense(name = "Output",
+              units = 3, 
+              activation = "softmax")
+
+model_big_DO
+```
+
+```{r}
+model_big_DO  %>% 
+  compile(
+    loss = "categorical_crossentropy",
+    optimizer = optimizer_nadam(lr = 0.0001),
+    metrics = "accuracy"
+  )
+
+# 45 (lr = 0.001) + 35 (lr = 0.001) + 35 (lr = 0.0001) + 15 (lr = 0.0001)
+
+# 15 (lr = 0.001) + 35 (lr = 0.001) + 25 (lr = 0.001) + 35 (lr = 0.0001)
+
+# FULL ELU IS NOT WORKING
+
+# RELU on CNN, ELU on dense, dropout_rate = 0.2
+# 55 (lr = 0.001) + 25 (lr = 0.0001) + 11 (lr = 0.0001) + 15
+
+# RELU on CNN, ELU on dense, dropout_rate = 0.2, lr = 0.002, kernel_regularization = l2(0.001) x 2 in early dense
+#55 lr 0.002 + 45 0.0002
+history_model_big_DO <- model_big_DO %>% 
+  fit_generator(
+  # training data
+  train_image_array_gen,
+  
+  # epochs
+  steps_per_epoch = as.integer(train_samples / batch_size), 
+  epochs = 35, 
+  
+  # validation data
+  validation_data = val_image_array_gen,
+  validation_steps = as.integer(valid_samples / batch_size),
+  
+  # print progress
+  verbose = 1
+)
+```
+
+```{r}
+folder_list_test <- list.files("data/test/test/")
+
+folder_path_test <- paste0("data/test/test/", folder_list_test,"/")
+
+test_image_array_gen <- flow_images_from_directory(directory = "data/test/",
+                                                  target_size = target_size, 
+                                                  color_mode = "rgb", 
+                                                  batch_size = batch_size ,
+                                                  seed = 123
+                                                  )
+```
+
+```{r}
+test_data <- data.frame(file_name = paste0("data/test/", test_image_array_gen$filenames)) %>% 
+  mutate(class = str_extract(file_name, "test"))
+
+head(test_data, 10)
+```
+
+
+```{r}
+# Function to convert image to array
+image_prep <- function(x) {
+  arrays <- lapply(x, function(path) {
+    img <- image_load(path, target_size = target_size, 
+                      grayscale = F # Set FALSE if image is RGB
+                      )
+    
+    x <- image_to_array(img)
+    x <- array_reshape(x, c(1, dim(x)))
+    x <- x/255 # rescale image pixel
+  })
+  do.call(abind::abind, c(arrays, list(along = 1)))
+}
+```
+
+```{r}
+test_x_2 <- image_prep(test_data$file_name)
+
+# Check dimension of testing data set
+dim(test_x_2)
+```
+
+```{r}
+pred_test_4 <- predict_classes(model_big_DO, test_x_2) 
+
+head(pred_test_4, 10)
+```
+
+```{r}
+# Convert encoding to label
+decode <- function(x){
+  case_when(x == 0 ~ "beach",
+            x == 1 ~ "forest",
+            x == 2 ~ "mountain"
+            )
+}
+
+pred_test_4 <- sapply(pred_test_4, decode) 
+
+head(pred_test_4, 10)
+```
+
+
+
+```{r}
+result4 <- cbind(folder_path_test, pred_test_4)
+```
+
+```{r}
+result4 <- as.data.frame(result4)
+result4$folder_path_test <- gsub("data/test/test/","",result4$folder_path_test)
+result4$folder_path_test <- gsub("/","", result4$folder_path_test)
+
+result4 <- result4 %>%
+  rename("id" = "folder_path_test",
+         "label" = "pred_test_4"
+         )
+```
+
+```{r}
+write_csv(result4, "result14.csv")
+```
+
+```{r}
+# Save model
+save_model_hdf5(model_big_DO, "model_CNN_tuned_withDO_RELU_to_ELU_regularized.hdf5")
+```
+
+
+
+```{r}
+val_data <- data.frame(file_name = paste0("data/train/", val_image_array_gen$filenames)) %>% 
+  mutate(class = str_extract(file_name, "beach|forest|mountain"))
+
+head(val_data, 10)
+
+test_x <- image_prep(val_data$file_name)
+pred_test <- predict_classes(model_big_DO, test_x) 
+pred_test <- sapply(pred_test, decode) 
+
+confusionMatrix(as.factor(pred_test), 
+                as.factor(val_data$class)
+                )
+```
+
