@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1624454465293.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "434864596",
+    "id" : "6A085E6B",
+    "lastKnownWriteTime" : 1619528914,
+    "last_content_update" : 1619528914,
+    "path" : "~/ALGORITMA BOOTCAMP/WeeklyPlot/Week 2 30 DAY CHART/pyramid.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "92,9",
+        "scrollLine" : "83"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

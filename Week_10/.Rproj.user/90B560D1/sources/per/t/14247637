@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1624453266746.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "14247637",
+    "lastKnownWriteTime" : 0,
+    "last_content_update" : 1624453266746,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "1BFDAA38",
+        "caption" : "parks",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=parks&cache_key=1BFDAA38",
+        "displayedObservations" : 713,
+        "environment" : "",
+        "object" : "parks",
+        "preview" : 0,
+        "totalObservations" : 713,
+        "variables" : 28
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

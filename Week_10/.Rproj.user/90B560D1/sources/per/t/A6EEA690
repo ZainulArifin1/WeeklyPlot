@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1624453612105.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4273089597",
+    "id" : "A6EEA690",
+    "lastKnownWriteTime" : 1618933285,
+    "last_content_update" : 1624454075155,
+    "path" : "~/ALGORITMA BOOTCAMP/WeeklyPlot/Week 2 TT/TT3.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "55,0",
+        "scrollLine" : "42"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

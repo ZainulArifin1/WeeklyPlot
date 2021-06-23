@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1624453039910.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "DCF6BED6",
+    "lastKnownWriteTime" : 2319406795647432736,
+    "last_content_update" : 1624453039910,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "62248C20",
+        "caption" : "top_20_2020",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=top_20_2020&cache_key=62248C20",
+        "displayedObservations" : 18,
+        "environment" : "",
+        "object" : "top_20_2020",
+        "preview" : 0,
+        "totalObservations" : 18,
+        "variables" : 28
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
