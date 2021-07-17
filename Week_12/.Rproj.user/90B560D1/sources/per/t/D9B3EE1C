@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1625564954032.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2099302897",
+    "id" : "D9B3EE1C",
+    "lastKnownWriteTime" : 1625567118,
+    "last_content_update" : 1625567118489,
+    "path" : "~/ALGORITMA BOOTCAMP/WeeklyPlot/Week_12/country_age.R",
+    "project_path" : "country_age.R",
+    "properties" : {
+        "cursorPosition" : "14,0",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

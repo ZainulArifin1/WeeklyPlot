@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1625567018920.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "6B587575",
+    "lastKnownWriteTime" : 9007478432661588,
+    "last_content_update" : 1625567018920,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "8403F124",
+        "caption" : "fromUK",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=fromUK&cache_key=8403F124",
+        "displayedObservations" : 51,
+        "environment" : "",
+        "object" : "fromUK",
+        "preview" : 0,
+        "totalObservations" : 51,
+        "variables" : 12
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

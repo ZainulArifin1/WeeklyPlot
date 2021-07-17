@@ -1,0 +1,14 @@
+# Packages ----------------------------------------------------------------
+library(tidyverse)
+library(scales)
+library(ragg)
+library(ggthemes)
+library("rnaturalearth")
+library("rnaturalearthdata")
+
+# input -------------------------------------------------------------------
+holidays <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-07-06/holidays.csv')
+
+fromUK <- holidays %>%
+  filter(independence_from == "United Kingdom")
+

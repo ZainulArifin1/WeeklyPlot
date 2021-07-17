@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1624970322693.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1528178138",
+    "id" : "B1EE81D5",
+    "lastKnownWriteTime" : 1624980303,
+    "last_content_update" : 1624980303368,
+    "path" : "~/ALGORITMA BOOTCAMP/WeeklyPlot/Week_11/animal_rescue.R",
+    "project_path" : "animal_rescue.R",
+    "properties" : {
+        "cursorPosition" : "0,0",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

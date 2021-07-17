@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1624971337149.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "BF7BCA53",
+    "lastKnownWriteTime" : 3180141808686473843,
+    "last_content_update" : 1624971337149,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "B353EE9",
+        "caption" : "animal_rescues",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=animal_rescues&cache_key=B353EE9",
+        "displayedObservations" : 7544,
+        "environment" : "",
+        "object" : "animal_rescues",
+        "preview" : 0,
+        "totalObservations" : 7544,
+        "variables" : 31
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
