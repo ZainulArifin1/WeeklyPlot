@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1626540828230.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "35DB3EBE",
+    "lastKnownWriteTime" : 0,
+    "last_content_update" : 1626540828230,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "E4221579",
+        "caption" : "scoobydoo",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=scoobydoo&cache_key=E4221579",
+        "displayedObservations" : 603,
+        "environment" : "",
+        "object" : "scoobydoo",
+        "preview" : 0,
+        "totalObservations" : 603,
+        "variables" : 75
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

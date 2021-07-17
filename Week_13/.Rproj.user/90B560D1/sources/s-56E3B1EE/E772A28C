@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1626540782405.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "E772A28C",
+    "lastKnownWriteTime" : 1625573808,
+    "last_content_update" : 1625573808,
+    "path" : "~/ALGORITMA BOOTCAMP/WeeklyPlot/Week_12/commonwealth.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "60,0",
+        "scrollLine" : "42"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
