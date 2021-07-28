@@ -1,0 +1,134 @@
+---
+title: "Women Workforce in 2016"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(plotly)
+library(scales)
+```
+
+
+```{r}
+workers <- read_csv("data/jobs_gender.csv")
+
+theme_algoritma <- readRDS("theme_algoritma.rds")
+
+workers <- workers %>%
+  drop_na(total_earnings_male, total_earnings_female) %>% 
+  mutate(percent_male = 100 - percent_female)
+```
+
+
+Column 
+-----------------------------------------------------------------------
+
+### Proportion of Workers US 2016 
+
+```{r}
+workers_gap <- workers %>% 
+  filter(year == 2016) %>% 
+  group_by(major_category) %>% 
+  summarise(
+    Male = mean(percent_male),
+    Female = mean(percent_female)
+  ) %>% 
+  ungroup() %>% 
+  mutate(major_category = reorder(major_category, Male - Female)) %>% 
+  pivot_longer(cols = -major_category) %>% 
+  mutate(text = paste(name,":", round(value,2) ,"%")) 
+
+plot_gendergap <- ggplot(workers_gap, aes(value, major_category, text = text))+ 
+  geom_col(aes(fill = name))+
+  geom_vline(xintercept = 50, linetype = "dotted")+
+  labs(x = NULL, y= NULL, title = "US Labor Force Participation, 2016")+
+  theme(legend.position = "none") +
+  scale_x_continuous(labels = scales::unit_format(unit = "%"))+
+  theme_algoritma
+
+ggplotly(plot_gendergap, tooltip = "text") %>%
+  config(displayModeBar = F)
+```
+
+### US Gender Gap 2016
+
+```{r}
+workers_earn <- workers %>% 
+  filter(year == 2016) %>% 
+  group_by(major_category) %>% 
+  summarise(Male = mean(total_earnings_male),
+            Female = mean(total_earnings_female)) %>% 
+  ungroup() %>% 
+  mutate(
+    major_category = reorder(major_category,
+                             Male-Female)
+  )  %>% 
+  pivot_longer(cols = -major_category) %>% 
+  mutate(
+    text = paste(name,":",round(value,2),'$')
+  )
+
+plot_earn <- ggplot(workers_earn, aes(x = value, y = major_category, text = text))+
+  geom_col(aes(fill = name), position = "dodge")+
+  labs(x=NULL, y = NULL, title = "US Gender Pay Gap in 2016")+
+  theme(legend.position = "none")+
+  scale_x_continuous(labels = scales::unit_format(unit = "$"))+
+  theme_algoritma
+
+ggplotly(plot_earn, tooltip = "text")%>%
+  config(displayModeBar = F)
+```
+
+
+Column 
+-----------------------------------------------------------------------
+
+### Yearly Female Earnings
+
+```{r}
+plot_box <- workers %>% 
+  ggplot(aes(as.factor(year), total_earnings_female, text = occupation)) + 
+  geom_jitter(aes(color = major_category), alpha = 0.4)+
+  geom_boxplot(aes(group = year), outlier.color = "white")+
+  labs(x = NULL, y = NULL, title = "Yearly Female Earnings per Occupation")+
+  theme(legend.position = "none")+
+  theme_algoritma
+
+ggplotly(plot_box, tooltip = "text") %>%
+  config(displayModeBar = F)
+```
+
+### Annual employment Growth by Gender
+
+```{r}
+plot_year <-  workers %>% 
+  group_by(year) %>% 
+  summarise(
+    Male = mean(percent_male),
+    Female = mean(percent_female)
+  ) %>% 
+  ungroup() %>% 
+  pivot_longer(-year) %>% 
+  mutate(text = paste(name,":",round(value,2),"%")) %>% 
+  
+  ggplot(aes(year, value,group=name, text = text))+
+  geom_point(aes(color = name))+
+  geom_line(aes(color = name))+
+  facet_wrap(~name, ncol=2, scales="free")+
+  labs(x = NULL, y = NULL, title = "Annual Employment Growth")+
+  theme(legend.position = "none")+
+  scale_y_continuous(labels = unit_format(unit="%"))+
+  theme_algoritma +
+  theme(plot.title = element_text(hjust = 0.5)) 
+
+
+ggplotly(plot_year, tooltip = "text") %>% 
+  config(displayModeBar = F)
+```
+
+
