@@ -1,0 +1,162 @@
+---
+title: "CoverageCopyNumber"
+author: "Zainul"
+date: "August 3, 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(RColorBrewer)
+library(data.table)
+options(scipen = 999)
+'%ni%' <- Negate('%in%')
+```
+
+```{r collection of functions}
+# Run once
+inputVCFfile <- function(file){
+  tmp_vcf<-readLines(file)
+  tmp_vcf_data<-read.table(file, stringsAsFactors = FALSE)
+
+  tmp_vcf<-tmp_vcf[-(grep("#CHROM",tmp_vcf)+1):-(length(tmp_vcf))]
+  vcf_names<-unlist(strsplit(tmp_vcf[length(tmp_vcf)],"\t"))
+  names(tmp_vcf_data)<-vcf_names
+  return(tmp_vcf_data)
+}
+
+inputVCFdir <- function(dir){
+  files_name <- list.files(dir)
+  files_list <- as.list(rep(NA, length(files_name)))
+
+  for (i in 1:length(files_name)){
+    files_list[[i]] <- inputVCFfile(as.character(paste(dir, files_name[i], sep = "/")))
+  }
+  names(files_list) <- files_name
+  return(files_list)
+}
+
+format_VCF <- function(vcf_file){
+  Format_Value <- names(vcf_file[10])
+  temp_table <- 
+    tidyr::separate(data = vcf_file, col = INFO, 
+                                into = c("DP","AD","I16","QS","VDB","SGB","RPB","MQB","MQSB","BQB","MQ0F"),
+                                sep = ";") %>%
+    select("#CHROM","POS","AD")
+    
+  colnames(temp_table)[1] <- "CHR"
+  temp_table$CHR <- gsub("^.{0,3}", "", temp_table$CHR)
+  temp_table$CHRPOS <- paste(temp_table$CHR, temp_table$POS, sep = ":")
+  temp_table <- temp_table[c(1,2,4,3)]
+  temp_table$AD <- gsub("^.{0,3}", "", temp_table$AD)
+  temp_table <- tidyr::separate(data = temp_table, col = AD, into = c("AD_REF","AD_ALT","AD3","AD4"),
+                                sep = ",") %>%
+    select(-c(AD3, AD4))
+  
+  cols.num <- c("AD_REF","AD_ALT")
+  temp_table[cols.num] <- sapply(temp_table[cols.num],as.numeric)
+  temp_table <- temp_table %>% 
+    mutate(
+      raw_count = AD_REF + AD_ALT
+      ) %>%
+    filter(raw_count >= 20) %>%
+    mutate(
+      percent_reads = raw_count / sum(raw_count)
+      ) %>%
+    dplyr::select(CHR,POS,CHRPOS,raw_count, percent_reads)
+
+  chrOrder<-c(paste(1:22,sep=""),"X","Y")
+  temp_table$CHR<-factor(temp_table$CHR, levels=chrOrder)
+  return(temp_table)
+}
+
+format_VCF_all <- function(files){
+  for (i in 1:length(files)){
+    files[[i]] <- format_VCF(files[[i]])
+  }
+  return(files)
+}
+
+calculate_copy_number <- function(ref_table,test_sample){
+  test_sample <- test_sample %>%
+    select(-percent_reads)
+  df_combined <- left_join(ref_table, test_sample, by = c("CHR","POS","CHRPOS"))
+  df_combined[is.na(df_combined)] <- 0
+  df_combined <- df_combined %>%
+    mutate(
+      percent_sample = raw_count / sum(raw_count),
+      copy_number = percent_sample /ref_percent_reads  * 2
+    )
+  
+  df_combined_sex <- df_combined %>% filter(CHR %in% c("X","Y"))
+  df_combined_auto <- df_combined %>% filter(CHR %ni% c("X","Y"))
+  
+  df_combined_sex$copy_number <- df_combined_sex$copy_number / 2
+  df_combined_final <- rbind(df_combined_auto,df_combined_sex)
+  
+  return(df_combined_final)
+}
+
+calculate_copy_number_all <- function(ref_table, files){
+  for (i in 1:length(files)){
+    files[[i]] <- calculate_copy_number(ref_table = ref_table, test_sample = files[[i]])
+  }
+  return(files)
+}
+
+plot_copy_number <- function(plot_file,plt_title){
+  new_plot <- tibble::rowid_to_column(plot_file, "index")
+  chrOrder<-c(paste(1:22,sep=""),"X","Y")
+  new_plot$CHR<-factor(new_plot$CHR, levels=chrOrder)
+  
+  ggplot() +
+    geom_rect(data = subset(subset(new_plot,CHR %in% c('2','4','6','8','10','12','14','16','18','20','22','Y'))),
+              aes(fill = "white"),xmin = -Inf,xmax = Inf, fill = "white",
+              ymin = -Inf,ymax = Inf) +
+    scale_fill_manual(values = alpha(c("white"), 0.2)) +
+    geom_point(data = new_plot, mapping = aes(x = index, y = copy_number), size = 1) +
+    facet_grid(~CHR, scales = 'free_x', space = 'fixed', switch = 'x') +
+    theme(
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank(),
+      panel.spacing = unit(0.01, "lines"),
+      panel.grid = element_blank(),
+      panel.border = element_rect(colour = "grey70", fill=NA, size=0.01),
+      strip.background = element_blank(),
+      legend.position = "none"
+      ) +
+    labs(
+      x = "Chromosome",
+      y = "Copy Number",
+      title = plt_title
+      ) +
+    geom_hline(yintercept=1, size = 0.5, color = "black", linetype = "dashed") +
+    geom_hline(yintercept=2, size = 0.5, color = "black", linetype = "dashed") +
+    geom_hline(yintercept=3, size = 0.5, color = "black", linetype = "dashed") +
+    geom_hline(yintercept=4, size = 0.5,color = "black", linetype = "dashed") +
+    scale_y_continuous(limits = c(0,4), expand = c(0, 0))
+}
+```
+
+```{r, warning = FALSE, message = FALSE}
+refs <- inputVCFdir("all vcf files trimmed_pc_ca/-d100000/ngmlr_aligned/mq30/normal/") %>% format_VCF_all()
+samples <- inputVCFdir("all vcf files trimmed_pc_ca/-d100000/ngmlr_aligned/mq30/aneu/") %>% format_VCF_all()
+
+ref_table <- refs %>%
+  purrr::reduce(full_join, by = c("CHR","POS","CHRPOS")) %>%
+  drop_na()
+ref_table <- ref_table %>% select(-contains("raw_count"))
+ref_table$ref_percent_reads <- rowMeans(ref_table[,c(4:ncol(ref_table))])
+ref_table_final <- ref_table %>% dplyr::select(CHR,POS,CHRPOS,ref_percent_reads)
+
+to_plot <- calculate_copy_number_all(ref_table = ref_table_final,files = samples)
+
+for (i in 1:length(to_plot)){
+  plt_title <- names(to_plot[i]) 
+  print(plot_copy_number(plot_file = to_plot[[i]], plt_title = plt_title))
+}
+```
+
+Notes:
+1. Each VCF file has different SNPs (not consistent)

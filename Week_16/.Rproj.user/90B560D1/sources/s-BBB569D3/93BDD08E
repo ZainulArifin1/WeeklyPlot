@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1628329085935.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "93BDD08E",
+    "lastKnownWriteTime" : 3419473789575321445,
+    "last_content_update" : 1628329085935,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "CB8B6E0B",
+        "caption" : "total_medals",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=total_medals&cache_key=CB8B6E0B",
+        "displayedObservations" : 304,
+        "environment" : "",
+        "object" : "total_medals",
+        "preview" : 0,
+        "totalObservations" : 304,
+        "variables" : 3
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

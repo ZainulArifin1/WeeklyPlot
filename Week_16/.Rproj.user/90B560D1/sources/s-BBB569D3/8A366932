@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1628329794600.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "8A366932",
+    "lastKnownWriteTime" : 1628042626,
+    "last_content_update" : 1628042626,
+    "path" : "~/SNPBAF/SNP_BAF_count/Copy_Number_Pipeline.Rmd",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "69,2",
+        "scrollLine" : "60"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

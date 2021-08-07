@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1627962134392.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "B4E99DA3",
+    "lastKnownWriteTime" : 1628335306,
+    "last_content_update" : 1628345955872,
+    "path" : "~/WeeklyPlot/Week_16/paralympics.R",
+    "project_path" : "paralympics.R",
+    "properties" : {
+        "cursorPosition" : "38,0",
+        "scrollLine" : "32",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

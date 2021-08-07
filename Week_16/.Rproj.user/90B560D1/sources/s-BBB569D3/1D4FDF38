@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1628328999967.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "1D4FDF38",
+    "lastKnownWriteTime" : 3419473789575321445,
+    "last_content_update" : 1628328999967,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "77F74728",
+        "caption" : "athletes",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=athletes&cache_key=77F74728",
+        "displayedObservations" : 19547,
+        "environment" : "",
+        "object" : "athletes",
+        "preview" : 0,
+        "totalObservations" : 19547,
+        "variables" : 10
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
