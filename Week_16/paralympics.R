@@ -1,9 +1,7 @@
 # Packages ----------------------------------------------------------------
 library(tidyverse)
 library(scales)
-library(emoji)
 library(ragg)
-library(hrbrthemes)
 
 sysfonts::font_add_google('Cairo')
 showtext::showtext_auto()
@@ -36,7 +34,8 @@ top_3$medal <- factor(top_3$medal, levels = c("Gold","Silver","Bronze"))
 
 # Data Viz ----------------------------------------------------------------
 
-ggplot(data = top_3, aes(x = abb, y =n, fill = medal) ) +
+res <-
+  ggplot(data = top_3, aes(x = abb, y =n, fill = medal) ) +
   geom_bar(stat="identity", position=position_dodge(0.5), width = 0.5) +
   geom_text(
     aes(label = paste(n)),
@@ -44,7 +43,7 @@ ggplot(data = top_3, aes(x = abb, y =n, fill = medal) ) +
     fontface = "bold",
     family = "Cairo",
     position = position_dodge(0.5),
-    size = 3.5
+    size = 10
   ) +
   scale_fill_manual(values=c('gold','#c0c0c0','#cd7f32')) +
   theme_minimal() +
@@ -59,13 +58,16 @@ ggplot(data = top_3, aes(x = abb, y =n, fill = medal) ) +
     panel.grid = element_blank(),
     axis.title.y = element_blank(),
     axis.text.y = element_blank(),
-    axis.text.x = element_text(family = "Cairo", face = "bold", size = 12),
-    legend.title = element_blank()
+    axis.text.x = element_text(family = "Cairo", face = "bold", size = 33),
+    legend.text = element_text(family = "Cairo", size = 33),
+    legend.title = element_blank(),
+    plot.title = element_text(hjust = 0.5, family = "Cairo", size = 51),
+    plot.caption = element_text(hjust = 1, family = "Cairo", size = 33)
   ) +
-  ylim(0,800)
+  ylim(0,860)
   
 
 
-agg_png(filename = paste0("res.png"), width = 40, height = 25, units = 'cm', res = 180)
+agg_png(filename = paste0("res.png"), width = 30, height = 35, units = 'cm', res = 180)
 print(res)
 dev.off()

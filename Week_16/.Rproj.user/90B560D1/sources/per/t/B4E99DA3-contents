@@ -1,9 +1,7 @@
 # Packages ----------------------------------------------------------------
 library(tidyverse)
 library(scales)
-library(emoji)
 library(ragg)
-library(hrbrthemes)
 
 sysfonts::font_add_google('Cairo')
 showtext::showtext_auto()
