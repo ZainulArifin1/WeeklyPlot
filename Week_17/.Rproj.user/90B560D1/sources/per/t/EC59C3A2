@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1628867027446.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "EC59C3A2",
+    "lastKnownWriteTime" : 7308604914264011873,
+    "last_content_update" : 1628867027446,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "62BCC6A3",
+        "caption" : "chain_investment",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=chain_investment&cache_key=62BCC6A3",
+        "displayedObservations" : 6035,
+        "environment" : "",
+        "object" : "chain_investment",
+        "preview" : 0,
+        "totalObservations" : 6035,
+        "variables" : 5
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

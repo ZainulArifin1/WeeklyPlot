@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1628866561503.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3712509041",
+    "id" : "681F743E",
+    "lastKnownWriteTime" : 1628869873,
+    "last_content_update" : 1628869873279,
+    "path" : "~/WeeklyPlot/Week_17/USA_investment.R",
+    "project_path" : "USA_investment.R",
+    "properties" : {
+        "cursorPosition" : "24,0",
+        "scrollLine" : "10",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

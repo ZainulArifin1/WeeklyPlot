@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1629834730222.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "B6962FBA",
+    "lastKnownWriteTime" : 1627483869,
+    "last_content_update" : 1627483869,
+    "path" : "~/WeeklyPlot/Week_15/gender_per_olym.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "50,0",
+        "scrollLine" : "32"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

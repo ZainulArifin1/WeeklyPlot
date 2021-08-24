@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1629808693402.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "3596B3E4",
+    "lastKnownWriteTime" : 32651574046883920,
+    "last_content_update" : 1629808693402,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "B7F3B9CA",
+        "caption" : "lemurs_unique",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=lemurs_unique&cache_key=B7F3B9CA",
+        "displayedObservations" : "2262",
+        "environment" : "",
+        "object" : "lemurs_unique",
+        "preview" : "0",
+        "totalObservations" : "2262",
+        "variables" : "54"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

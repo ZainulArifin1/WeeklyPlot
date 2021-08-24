@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1628866817007.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "D91E1901",
+    "lastKnownWriteTime" : 0,
+    "last_content_update" : 1628866817007,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "C19A35B8",
+        "caption" : "ipd",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=ipd&cache_key=C19A35B8",
+        "displayedObservations" : "6106",
+        "environment" : "",
+        "object" : "ipd",
+        "preview" : "0",
+        "totalObservations" : "6106",
+        "variables" : "5"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

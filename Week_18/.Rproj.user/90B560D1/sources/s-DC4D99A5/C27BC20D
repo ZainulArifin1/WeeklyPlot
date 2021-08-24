@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1629808321894.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "C27BC20D",
+    "lastKnownWriteTime" : 4702955625060129594,
+    "last_content_update" : 1629808321894,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "400E751B",
+        "caption" : "lemurs",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=lemurs&cache_key=400E751B",
+        "displayedObservations" : 82609,
+        "environment" : "",
+        "object" : "lemurs",
+        "preview" : 0,
+        "totalObservations" : 82609,
+        "variables" : 54
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

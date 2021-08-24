@@ -1,0 +1,7 @@
+library(rayshader)
+library(raster)
+library(elevatr)
+library(dplyr)
+
+Ireland <- readRDS(url("https://biogeo.ucdavis.edu/data/gadm3.6/Rsf/gadm36_IRL_0_sf.rds"))
+dem <- elevatr::get_elev_raster(Ireland, z = 4)

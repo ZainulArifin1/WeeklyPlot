@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1629808181628.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "B9ADA32D",
+    "lastKnownWriteTime" : 1629834987,
+    "last_content_update" : 1629834987597,
+    "path" : "~/WeeklyPlot/Week_18/Lemurs.R",
+    "project_path" : "Lemurs.R",
+    "properties" : {
+        "cursorPosition" : "27,0",
+        "docOutlineVisible" : "0",
+        "scrollLine" : "25",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

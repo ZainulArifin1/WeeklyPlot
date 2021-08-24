@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1628866623114.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "25CEC841",
+    "lastKnownWriteTime" : 0,
+    "last_content_update" : 1628866623114,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "id" : "43be15e1189f42a7b9fc6d08d8691ceb",
+        "name" : "tuesdata",
+        "title" : "tuesdata"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "object_explorer"
+}
